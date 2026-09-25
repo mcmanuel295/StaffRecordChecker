@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -18,7 +19,7 @@ import java.util.List;
 public class RecordCheckerService {
 
 
-    public Response checkRecords(MultipartFile csvFile){
+    public Response checkRecords(MultipartFile csvFile) throws IOException {
         if (csvFile == null) {
             throw new RuntimeException("file is empty ");
         }
@@ -85,14 +86,15 @@ public class RecordCheckerService {
                     .invalidRecordCount(invalidRecordList.size())
                     .build();
         }
-        catch (IOException ex) {
-            System.out.println("IOException : "+ex.getMessage());
-                throw new RuntimeException(ex);
+        catch (MultipartException ex){
+            System.out.println("MultipartException : "+ex.getMessage());
+            throw new MultipartException(ex.getMessage()
+            );
         }
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("a2example.com");
+        return email.contains("@example.com");
     }
 
     private boolean isDuplicate(String email, List<String> emailList) {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -24,6 +25,10 @@ public class RecordCheckerController {
             Response response = service.checkRecords(csvFile);
             return ResponseEntity.ok().body(response);
 
+        }
+        catch (MultipartException ex){
+            System.out.println("multipartException "+ex.getMessage());
+            return ResponseEntity.badRequest().build();
         }
         catch (Exception e){
             return ResponseEntity.badRequest().build();

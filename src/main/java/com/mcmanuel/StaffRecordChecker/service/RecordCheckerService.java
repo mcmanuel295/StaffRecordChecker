@@ -98,7 +98,7 @@ public class RecordCheckerService {
     }
 
     private boolean isDuplicate(String email, List<String> emailList) {
-        return emailList.contains(email);
+        return emailList.stream().anyMatch(each -> each.equalsIgnoreCase(email));
     }
 
 
